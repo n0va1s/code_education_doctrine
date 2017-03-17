@@ -2,43 +2,66 @@
 
 namespace JP\Sistema\Service;
 
+use \Doctrine\ORM\EntityManager;
 use JP\Sistema\Entity\ProdutoEntity;
-use JP\Sistema\Mapper\ProdutoMapper;
 
 class ProdutoService
 {
-    private $ent;
-    private $map;
+    private $em;
 
-    public function __construct(ProdutoEntity $ent, ProdutoMapper $map)
+    public function __construct(EntityManager $em)
     {
-        $this->ent = $ent;
-        $this->map = $map;
+        $this->em = $em;
     }
 
     public function save(array $dados)
     {
-        $this->ent->setId($dados['seqProduto']);
-        $this->ent->setNome($dados['nomProduto']);
-        $this->ent->setDescricao($dados['desProduto']);
-        
-        $valor = str_replace(",", ".", $dados['valProduto']);
-        $this->ent->setValor($valor);
-        return $this->map->gravar($this->ent);
-    }
-
-    public function findById(int $id)
-    {
-        return $this->map->listar($id);
+        if (!isset($dados['seqProduto'])) {
+            $produto = new ProdutoEntity();
+            $produto->setNome($dados['nomProduto']);
+            $produto->setDescricao($dados['desProduto']);
+            $produto->setValor(str_replace(",", ".", $dados['valProduto']));
+            $this->em->persist($produto);
+        } else {
+            //Nao consulta. Cria apenas uma referencia ao objeto que sera persistido
+            $produto = $this->em->getReference('\JP\Sistema\Entity\ProdutoEntity', $dados['seqProduto']);
+            $produto->setNome($dados['nomProduto']);
+            $produto->setDescricao($dados['desProduto']);
+            $produto->setValor(str_replace(",", ".", $dados['valProduto']));
+        }
+        $this->em->flush();
+        return $this->fetchAll();
     }
 
     public function delete(int $id)
     {
-        return $this->map->excluir($id);
+        $produto = $this->em->getReference('\JP\Sistema\Entity\ProdutoEntity', $id);
+        $this->em->remove($produto);
+        $this->em->flush();
+        return $this->fetchAll();
     }
 
-    public function fetchall()
+    public function fetchAll()
     {
-        return $this->map->listar();
+        $r = $this->em->getRepository('\JP\Sistema\Entity\ProdutoEntity');
+        $produtos = $r->findAll();
+        return $produtos;
+    }
+
+    public function findById(int $id)
+    {
+        $r = $this->em->getRepository('\JP\Sistema\Entity\ProdutoEntity');
+        $produto = $r->findOneById($id);
+        return $produto;
+    }
+
+    public function toArray(ProdutoEntity $produto)
+    {
+        return  array(
+            'id' => $produto->getId(),
+            'nome' => $produto->getNome() ,
+            'descricao' => $produto->getEmail(),
+            'valor' => $produto->getValor(),
+            );
     }
 }

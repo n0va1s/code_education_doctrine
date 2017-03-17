@@ -25,9 +25,7 @@ class ClienteController implements ControllerProviderInterface
         $ctrl = $app['controllers_factory'];
 
         $app['cliente_service'] = function () {
-            $ent = new \JP\Sistema\Entity\ClienteEntity();
-            $map = new \JP\Sistema\Mapper\ClienteMapper($this->em);
-            return new \JP\Sistema\Service\ClienteService($ent, $map);
+            return new \JP\Sistema\Service\ClienteService($this->em);
         };
         //aplicacao
         $ctrl->get('/', function () use ($app) {
@@ -38,8 +36,7 @@ class ClienteController implements ControllerProviderInterface
             return $app['twig']->render('cliente_cadastro.twig', array('cliente'=>null));
         })->bind('incluirCliente');
 
-        $ctrl->get('/alterar/{id}', function (Request $req, $id) use ($app) {
-            $dados = $req->request->all();
+        $ctrl->get('/alterar/{id}', function ($id) use ($app) {
             $srv = $app['cliente_service'];
             $cliente = $srv->findById($id);
             return $app['twig']->render('cliente_cadastro.twig', array('cliente'=>$cliente));

@@ -2,40 +2,63 @@
 
 namespace JP\Sistema\Service;
 
+use \Doctrine\ORM\EntityManager;
 use JP\Sistema\Entity\ClienteEntity;
-use JP\Sistema\Mapper\ClienteMapper;
 
 class ClienteService
 {
-    private $ent;
-    private $map;
+    private $em;
 
-    public function __construct(ClienteEntity $ent, ClienteMapper $map)
+    public function __construct(EntityManager $em)
     {
-        $this->ent = $ent;
-        $this->map = $map;
+        $this->em = $em;
     }
 
     public function save(array $dados)
     {
-        $this->ent->setId($dados['seqCliente']);
-        $this->ent->setNome($dados['nomCliente']);
-        $this->ent->setEmail($dados['emlCliente']);
-        return $this->map->gravar($this->ent);
-    }
-
-    public function findById(int $id)
-    {
-        return $this->map->listar($id);
+        if (isset($dados['seqCliente'])) {
+            $cliente = new ClienteEntity();
+            $cliente->setNome($dados['nomCliente']);
+            $cliente->setEmail($dados['emlCliente']);
+            $this->em->persist($cliente);
+        } else {
+            //Nao consulta. Cria apenas uma referencia ao objeto que sera persistido
+            $cliente = $this->em->getReference('\JP\Sistema\Entity\ClienteEntity', $dados['seqCliente']);
+            $cliente->setNome($dados['nomCliente']);
+            $cliente->setEmail($dados['emlCliente']);
+        }
+        $this->em->flush();
+        return $this->fetchall();
     }
 
     public function delete(int $id)
     {
-        return $this->map->excluir($id);
+        $cliente = $this->em->getReference('\JP\Sistema\Entity\ClienteEntity', $id);
+        $this->em->remove($cliente);
+        $this->em->flush();
+        return $this->fetchall();
     }
 
     public function fetchall()
     {
-        return $this->map->listar();
+        $r = $this->em->getRepository('\JP\Sistema\Entity\ClienteEntity');
+        $clientes = $r->findAll();
+        return $clientes;
+    }
+
+    public function findById(int $id)
+    {
+        $r = $this->em->getRepository('\JP\Sistema\Entity\ClienteEntity');
+        $cliente = $r->findOneById($id);
+        return $cliente;
+    }
+
+    public function toArray(ClienteEntity $cliente)
+    {
+        return  array(
+            'id' => $cliente->getId(),
+            'nome' => $cliente->getNome() ,
+            'email' => $cliente->getEmail(),
+            );
     }
 }

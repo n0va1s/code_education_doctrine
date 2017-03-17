@@ -25,9 +25,7 @@ class ProdutoController implements ControllerProviderInterface
         $ctrl = $app['controllers_factory'];
 
         $app['produto_service'] = function () {
-            $ent = new \JP\Sistema\Entity\ProdutoEntity();
-            $map = new \JP\Sistema\Mapper\ProdutoMapper($this->em);
-            return new \JP\Sistema\Service\ProdutoService($ent, $map);
+            return new \JP\Sistema\Service\ProdutoService($this->em);
         };
         //aplicacao
         $ctrl->get('/', function () use ($app) {
