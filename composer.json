@@ -5,13 +5,13 @@
         "twig/twig": "^2.2",
         "symfony/security": "^3.2",
         "symfony/twig-bridge": "^3.2",
-        "doctrine/orm": "^2.5"
+        "doctrine/dbal": "^2.5",
+        "doctrine/orm": "^2.5",
+        "gedmo/doctrine-extensions": "^2.4"
     },
-
     "config": {
-        "bin-dir":"bin/"
-    },
-
+        "bin-dir": "bin/"
+    }, 
     "autoload": {
     	"psr-4": {
     		"JP\\Sistema\\":"src/JP/Sistema"

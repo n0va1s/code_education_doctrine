@@ -48,7 +48,7 @@ $em = EntityManager::create(
         'port'    => '3306',
         'user'    => 'root',
         'password'  => 'root',
-        'dbname'  => 'doctrine',
+        'dbname'  => 'code_education_doctrine',
     ),
     $config,
     $evm
@@ -56,3 +56,11 @@ $em = EntityManager::create(
 
 $app = new \Silex\Application();
 $app['debug'] = true;
+
+$app->register(new Silex\Provider\TwigServiceProvider(), array(
+    'twig.path' => __DIR__.'/views',
+));
+
+//Foi para o core do Silex 2.0
+//$app->register(new Silex\Provider\UrlGeneratorServiceProvider());
+

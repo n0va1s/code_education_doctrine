@@ -1,0 +1,22 @@
+{% extends 'leiaute.twig' %}
+{% block conteudo %}
+    <!-- Main Content -->
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <a href="{{ app.url_generator.generate('incluirProduto') }}"><button>Novo produto (+)</button></a>
+                {% for produto in produtos %}
+                <div class="post-preview">
+                    <a href="{{ app.url_generator.generate('alterarProduto', {id: produto.id}) }}"><h2 class="post-title">{{ produto.nome }}</h2></a>
+                    <p class="post-subtitle">Por apenas R${{ produto.valor }}</p>
+                    <p class="post-meta">Mais informações: {{ produto.descricao }}</p>
+                </div>
+                <a href="{{ app.url_generator.generate('excluirProduto', {id: produto.id}) }}"><button>Excluir produto (-)</button></a>
+                <hr>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+

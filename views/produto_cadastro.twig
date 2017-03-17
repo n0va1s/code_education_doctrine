@@ -1,0 +1,34 @@
+{% extends 'leiaute.twig' %}
+{% block conteudo %}
+    <!-- Main Content -->
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <div>
+                    <form action="{{ app.url_generator.generate('gravarProduto') }}" method="post">
+                        <fieldset>
+                            <legend>Informe:</legend>
+                                <label for="nome">Nome:</label><br />
+                                <input type="text" id="nome" type="text" name="nomProduto" value ="{% if produto %}{{ produto.nome }}{% endif %}"><br />
+                                <label for="descricao">Descrição:</label><br />
+                                <input type="text" id="descricao" type="text" name="desProduto" value ="{% if produto %}{{ produto.descricao }}{% endif %}"> <br />
+                                <label for="valor">Valor:</label><br />
+                                <input type="text" id="valor" name="valProduto" value ="{% if produto %}{{ produto.valor }}{% endif %}">
+                        </fieldset>
+                        <br />
+                        <input type="submit" value="Enviar">
+                        <input type="reset" value="Limpar">
+                        <input type="hidden" name="seqProduto" value="{% if produto %}{{ produto.id }}{% endif %}">
+                    </form>
+                </div>
+                <hr>
+                <!-- Pager -->
+                <ul class="pager">
+                    <li class="next">
+                        <a href="{{ app.url_generator.generate('listarProdutoHtml') }}">Todos os produtos</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+{% endblock %}

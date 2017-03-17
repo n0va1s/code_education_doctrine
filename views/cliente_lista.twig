@@ -1,0 +1,22 @@
+{% extends 'leiaute.twig' %}
+{% block conteudo %}
+    <!-- Main Content -->
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <a href="{{ app.url_generator.generate('incluirCliente') }}"><button>Novo cliente (+)</button></a>
+                {% for cliente in clientes %}
+                <div class="post-preview">
+                    <a href="{{ app.url_generator.generate('alterarCliente', {id: cliente.id}) }}"><h2 class="post-title">{{ cliente.nome }}</h2></a>
+                    <p class="post-meta">Código do cliente: {{ cliente.id }}</a></p>
+                    <p class="post-meta">Contato <a href="mailto:{{ cliente.email }}">{{ cliente.email }}</a></p>
+                </div>
+                <a href="{{ app.url_generator.generate('excluirCliente', {id: cliente.id}) }}"><button>Excluir cliente (-)</button></a>
+                <hr>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+
