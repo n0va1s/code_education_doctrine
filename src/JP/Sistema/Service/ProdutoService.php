@@ -48,6 +48,13 @@ class ProdutoService
         return $produtos;
     }
 
+    public function fetchLimit(int $qtd)
+    {
+        $r = $this->em->getRepository('\JP\Sistema\Entity\ProdutoEntity');
+        $produtos = $r->findBy(array(), array('id' => 'DESC'), $qtd);
+        return $produtos;
+    }
+
     public function findById(int $id)
     {
         $r = $this->em->getRepository('\JP\Sistema\Entity\ProdutoEntity');

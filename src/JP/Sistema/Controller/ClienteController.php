@@ -40,7 +40,8 @@ class ClienteController implements ControllerProviderInterface
             $srv = $app['cliente_service'];
             $cliente = $srv->findById($id);
             return $app['twig']->render('cliente_cadastro.twig', array('cliente'=>$cliente));
-        })->bind('alterarCliente');
+        })->bind('alterarCliente')
+        ->assert('id', '\d+');
 
         $ctrl->post('/gravar', function (Request $req) use ($app) {
             $dados = $req->request->all();
@@ -53,15 +54,20 @@ class ClienteController implements ControllerProviderInterface
             $srv = $app['cliente_service'];
             $clientes = $srv->delete($id);
             return $app['twig']->render('cliente_lista.twig', array('clientes'=>$clientes));
-        })->bind('excluirCliente');
+        })->bind('excluirCliente')
+        ->assert('id', '\d+');
 
         $ctrl->get('/listar/html', function () use ($app) {
             return $app['twig']->render('cliente_lista.twig', ['clientes'=>$app['cliente_service']->fetchall()]);
         })->bind('listarClienteHtml');
 
-        $ctrl->get('/listar/json', function () use ($app) {
-            return new Response($app->json($app['cliente_service']->fetchall()), 201);
-        })->bind('listarClienteJson');
+        $ctrl->get('/listar/paginado/{qtd}', function ($qtd) use ($app) {
+            $srv = $app['cliente_service'];
+            $clientes = $srv->fetchLimit($qtd);
+            return $app->json($clientes);
+        })->bind('listarClientePaginado')
+        ->assert('id', '\d+')
+        ->value('qtd', 3); //limite padrao;
 
         //api
         $ctrl->get('/api/listar/json', function () use ($app) {
@@ -72,10 +78,10 @@ class ClienteController implements ControllerProviderInterface
 
         $ctrl->get('/api/listar/{id}', function ($id) use ($app) {
             $srv = $app['cliente_service'];
-            $clientes = $srv->fetchall();
-            $chave = array_search($id, array_column($clientes, 'id'));
-            return $app->json($clientes[$chave]);
-        })->bind('listarClienteIdJson');
+            $clientes = $srv->findById($id);
+            return $app->json($clientes);
+        })->bind('listarClienteIdJson')
+        ->assert('id', '\d+');
 
         $ctrl->post('/api/inserir', function (Request $req) use ($app) {
             $dados = $req->request->all();
@@ -89,13 +95,15 @@ class ClienteController implements ControllerProviderInterface
             $srv = $app['cliente_service'];
             $clientes = $srv->update($id, $dados);
             return $app->json($clientes[$chave]);
-        })->bind('atualizarClienteJson');
+        })->bind('atualizarClienteJson')
+        ->assert('id', '\d+');
 
         $ctrl->delete('/api/apagar/{id}', function ($id) use ($app) {
             $srv = $app['cliente_service'];
             $clientes = $srv->delete($id);
             return $app->json($clientes[$id]);
-        })->bind('apagarClienteJson');
+        })->bind('apagarClienteJson')
+        ->assert('id', '\d+');
 
         return $ctrl;
     }

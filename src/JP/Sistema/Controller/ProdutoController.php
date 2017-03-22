@@ -64,6 +64,14 @@ class ProdutoController implements ControllerProviderInterface
         $ctrl->get('/listar/html', function () use ($app) {
             return $app['twig']->render('produto_lista.twig', ['produtos'=>$app['produto_service']->fetchall()]);
         })->bind('listarProdutoHtml');
+
+        $ctrl->get('/listar/paginado/{qtd}', function ($qtd) use ($app) {
+            $srv = $app['produto_service'];
+            $produtos = $srv->fetchLimit($qtd);
+            return $app->json($produtos);
+        })->bind('listarProdutoPaginado')
+        ->assert('id', '\d+')
+        ->value('qtd', 3); //limite padrao;
         
         //api
         $ctrl->get('/api/listar/json', function () use ($app) {
