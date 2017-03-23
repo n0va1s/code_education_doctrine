@@ -45,15 +45,15 @@ class ClienteService
     {
         //Não usei o findAll porque ele retorna um objetivo Entity. Quero um array para transformar em JSON
         $clientes = $this->em->createQuery('select c from \JP\Sistema\Entity\ClienteEntity c')
-                   ->getQuery()
-                   ->getArrayResult();
+                         ->getArrayResult();
         return $clientes;
     }
 
     public function fetchLimit(int $qtd)
     {
-        $r = $this->em->getRepository('\JP\Sistema\Entity\ClienteEntity');
-        $clientes = $r->findBy(array(), array('id' => 'DESC'), $qtd);
+        $clientes = $this->em->createQuery('select c from \JP\Sistema\Entity\ClienteEntity c')
+                   ->setMaxResults($qtd)
+                   ->getArrayResult();
         return $clientes;
     }
 

@@ -8,8 +8,6 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use \Doctrine\ORM\EntityManager;
 use JP\Sistema\Service\ProdutoService;
-use JP\Sistema\Entity\ProdutoEntity;
-use JP\Sistema\Mapper\ProdutoMapper;
 
 class ProdutoController implements ControllerProviderInterface
 {
@@ -71,7 +69,7 @@ class ProdutoController implements ControllerProviderInterface
             return $app->json($produtos);
         })->bind('listarProdutoPaginado')
         ->assert('id', '\d+')
-        ->value('qtd', 3); //limite padrao;
+        ->value('qtd', 5); //limite padrao;
         
         //api
         $ctrl->get('/api/listar/json', function () use ($app) {

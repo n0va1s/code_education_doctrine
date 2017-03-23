@@ -43,16 +43,16 @@ class ProdutoService
 
     public function fetchAll()
     {
-        $produtos = $this->em->createQuery('select p from \JP\Sistema\Entity\ProdutoEntity c')
-                   ->getQuery()
+        $produtos = $this->em->createQuery('select p from \JP\Sistema\Entity\ProdutoEntity p')
                    ->getArrayResult();
         return $produtos;
     }
 
     public function fetchLimit(int $qtd)
     {
-        $r = $this->em->getRepository('\JP\Sistema\Entity\ProdutoEntity');
-        $produtos = $r->findBy(array(), array('id' => 'DESC'), $qtd);
+        $produtos = $this->em->createQuery('select p from \JP\Sistema\Entity\ProdutoEntity p')
+                   ->setMaxResults($qtd)
+                   ->getArrayResult();
         return $produtos;
     }
 
@@ -60,7 +60,6 @@ class ProdutoService
     {
         $cliente = $this->em->createQuery('select p from \JP\Sistema\Entity\ProdutoEntity p where id = :id')
                    ->setParameter('id', $id)
-                   ->getQuery()
                    ->getArrayResult();
         return $produto;
     }

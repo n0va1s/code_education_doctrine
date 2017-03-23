@@ -8,8 +8,6 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Doctrine\ORM\EntityManager;
 use JP\Sistema\Service\ClienteService;
-use JP\Sistema\Entity\ClienteEntity;
-use JP\Sistema\Mapper\ClienteMapper;
 
 class ClienteController implements ControllerProviderInterface
 {
@@ -67,7 +65,7 @@ class ClienteController implements ControllerProviderInterface
             return $app->json($clientes);
         })->bind('listarClientePaginado')
         ->assert('id', '\d+')
-        ->value('qtd', 3); //limite padrao;
+        ->value('qtd', 5); //limite padrao;
 
         //api
         $ctrl->get('/api/listar/json', function () use ($app) {

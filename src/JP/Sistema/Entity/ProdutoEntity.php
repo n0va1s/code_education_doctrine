@@ -29,6 +29,16 @@ class ProdutoEntity
      * @ORM\Column(type="decimal", precision=10, scale=2, name="val_produto")
      */
     private $valor;
+    /**
+     * @ORM\ManyToOne(targetEntity="Categoria")
+     * @ORM\JoinColumn(name="seq_categoria", referencedColumnName="seq_categoria")
+     */
+    private $categoria;
+    /**
+     * @ORM\ManyToOne(targetEntity="Tag")
+     * @ORM\JoinColumn(name="seq_tag", referencedColumnName="seq_tag")
+     */
+    private $tag;
 
     public function getId()
     {
@@ -71,6 +81,42 @@ class ProdutoEntity
     public function setValor($valor)
     {
         $this->valor = $valor;
+        return $this;
+    }
+
+    /**
+     * Sets the value of valor.
+     *
+     * @param mixed $valor the valor
+     *
+     * @return self
+     */
+    private function _setValor($valor)
+    {
+        $this->valor = $valor;
+
+        return $this;
+    }
+
+    public function getCategoria()
+    {
+        return $this->categoria;
+    }
+
+    public function setCategoria($categoria)
+    {
+        $this->categoria = $categoria;
+        return $this;
+    }
+
+    public function getTag()
+    {
+        return $this->tag;
+    }
+
+    public function _setTag($tag)
+    {
+        $this->tag = $tag;
         return $this;
     }
 }
