@@ -5,6 +5,7 @@ namespace JP\Sistema\Service;
 use \Doctrine\ORM\EntityManager;
 use \Doctrine\ORM\Query;
 use JP\Sistema\Entity\ClienteEntity;
+use Doctrine\ORM\Tools\Pagination\Paginator;
 
 class ClienteService
 {
@@ -46,6 +47,13 @@ class ClienteService
         $clientes = $this->em->createQuery('select c from \JP\Sistema\Entity\ClienteEntity c')
                    ->getQuery()
                    ->getArrayResult();
+        return $clientes;
+    }
+
+    public function fetchLimit(int $qtd)
+    {
+        $r = $this->em->getRepository('\JP\Sistema\Entity\ClienteEntity');
+        $clientes = $r->findBy(array(), array('id' => 'DESC'), $qtd);
         return $clientes;
     }
 
