@@ -3,6 +3,7 @@
 namespace JP\Sistema\Service;
 
 use \Doctrine\ORM\EntityManager;
+use \Doctrine\ORM\Query;
 use JP\Sistema\Entity\ClienteEntity;
 
 class ClienteService
@@ -41,15 +42,19 @@ class ClienteService
 
     public function fetchall()
     {
-        $r = $this->em->getRepository('\JP\Sistema\Entity\ClienteEntity');
-        $clientes = $r->findAll();
+        //Não usei o findAll porque ele retorna um objetivo Entity. Quero um array para transformar em JSON
+        $clientes = $this->em->createQuery('select c from \JP\Sistema\Entity\ClienteEntity c')
+                   ->getQuery()
+                   ->getArrayResult();
         return $clientes;
     }
 
     public function findById(int $id)
     {
-        $r = $this->em->getRepository('\JP\Sistema\Entity\ClienteEntity');
-        $cliente = $r->findOneById($id);
+        $cliente = $this->em->createQuery('select c from \JP\Sistema\Entity\ClienteEntity c where id = :id')
+                   ->setParameter('id', $id)
+                   ->getQuery()
+                   ->getArrayResult();
         return $cliente;
     }
 

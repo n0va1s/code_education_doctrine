@@ -43,15 +43,18 @@ class ProdutoService
 
     public function fetchAll()
     {
-        $r = $this->em->getRepository('\JP\Sistema\Entity\ProdutoEntity');
-        $produtos = $r->findAll();
+        $produtos = $this->em->createQuery('select p from \JP\Sistema\Entity\ProdutoEntity c')
+                   ->getQuery()
+                   ->getArrayResult();
         return $produtos;
     }
 
     public function findById(int $id)
     {
-        $r = $this->em->getRepository('\JP\Sistema\Entity\ProdutoEntity');
-        $produto = $r->findOneById($id);
+        $cliente = $this->em->createQuery('select p from \JP\Sistema\Entity\ProdutoEntity p where id = :id')
+                   ->setParameter('id', $id)
+                   ->getQuery()
+                   ->getArrayResult();
         return $produto;
     }
 
