@@ -7,7 +7,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 
 /**
  * @ORM\Entity
- * @ORM\Table(name="Cliente")
+ * @ORM\Table(name="Tag")
  */
 class TagEntity
 {

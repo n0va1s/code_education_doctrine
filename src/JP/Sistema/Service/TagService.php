@@ -18,7 +18,7 @@ class TagService
 
     public function save(array $dados)
     {
-        if (isset($dados['seqTag'])) {
+        if (!isset($dados['seqTag'])) {
             $tag = new TagEntity();
             $tag->setDescricao($dados['nomTag']);
             $this->em->persist($tag);
@@ -28,7 +28,7 @@ class TagService
             $tag->setNome($dados['nomTag']);
         }
         $this->em->flush();
-        return $this->fetchall();
+        return $this->toArray($tag);
     }
 
     public function delete(int $id)
@@ -36,30 +36,30 @@ class TagService
         $tag = $this->em->getReference('\JP\Sistema\Entity\TagEntity', $id);
         $this->em->remove($tag);
         $this->em->flush();
-        return $this->fetchall();
+        return $this->toArray($tag);
     }
 
     public function fetchall()
     {
         //Não usei o findAll porque ele retorna um objetivo Entity. Quero um array para transformar em JSON
-        $tags = $this->em->createQuery('select c from \JP\Sistema\Entity\TagEntity c')
-                           ->getArrayResult();
+        $tags = $this->em->createQuery('select t from \JP\Sistema\Entity\TagEntity t')
+                         ->getArrayResult();
         return $tags;
     }
 
     public function fetchLimit(int $qtd)
     {
-        $tags = $this->em->createQuery('select c from \JP\Sistema\Entity\TagEntity c')
-                           ->setMaxResults($qtd)
-                           ->getArrayResult();
+        $tags = $this->em->createQuery('select t from \JP\Sistema\Entity\TagEntity t')
+                         ->setMaxResults($qtd)
+                         ->getArrayResult();
         return $tags;
     }
 
     public function findById(int $id)
     {
-        $tag = $this->em->createQuery('select c from \JP\Sistema\Entity\TagEntity c where id = :id')
-                          ->setParameter('id', $id)
-                          ->getArrayResult();
+        $tag = $this->em->createQuery('select t from \JP\Sistema\Entity\TagEntity t where t.id = :id')
+                        ->setParameter('id', $id)
+                        ->getArrayResult();
         return $tag;
     }
 

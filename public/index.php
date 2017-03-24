@@ -9,5 +9,7 @@ $app->get('/', function () use ($app) {
 
 $app->mount('/cliente', new JP\Sistema\Controller\ClienteController($em));
 $app->mount('/produto', new JP\Sistema\Controller\ProdutoController($em));
+$app->mount('/categoria', new JP\Sistema\Controller\CategoriaController($em));
+$app->mount('/tag', new JP\Sistema\Controller\TagController($em));
 
 $app->run();

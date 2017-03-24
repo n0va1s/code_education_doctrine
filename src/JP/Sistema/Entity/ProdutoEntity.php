@@ -30,15 +30,23 @@ class ProdutoEntity
      */
     private $valor;
     /**
-     * @ORM\ManyToOne(targetEntity="Categoria")
+     * @ORM\ManyToOne(targetEntity="CategoriaEntity")
      * @ORM\JoinColumn(name="seq_categoria", referencedColumnName="seq_categoria")
      */
     private $categoria;
     /**
-     * @ORM\ManyToOne(targetEntity="Tag")
-     * @ORM\JoinColumn(name="seq_tag", referencedColumnName="seq_tag")
+     * @ORM\ManyToMany(targetEntity="TagEntity")
+     * @ORM\JoinTable(name="produto_tag",
+     *      joinColumns={@ORM\JoinColumn(name="seq_produto", referencedColumnName="seq_produto")},
+     *      inverseJoinColumns={@ORM\JoinColumn(name="seq_tag", referencedColumnName="seq_tag")}
+     *      )
      */
-    private $tag;
+    private $tags;
+
+    public function __construct()
+    {
+        $this->tags = new \Doctrine\Common\Collections\ArrayCollection();
+    }
 
     public function getId()
     {

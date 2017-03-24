@@ -1,0 +1,34 @@
+{% extends 'leiaute.twig' %}
+{% block conteudo %}
+    <!-- Main Content -->
+    <div class="container">
+        <div class="row">
+            <p>Módulo Categoria (API)</p><br />
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <div class="post-preview">
+                    <a href="#">
+                        <h2 class="post-title">Suas opções...</h2>
+                    </a>
+                    <h3 class="post-subtitle">Rotas:</h3>
+                    <p class="post-meta">
+                        Aqui vc pode administrar os dados da CATEGORIA via API: <br />
+                        /inserir - POST - cria uma categoria <br />
+                        /alterar/{id} - PUT - atualiza os dados de uma categoria <br />
+                        /apagar/{id} - DELETE - exclui uma categoria <br />
+                        /listar/json - GET - apresenta todas as categorias cadastrados em formato json  <br />
+                        /listar/{id} - GET - apresenta os dados de uma categoria  <br />
+                    </p>
+                </div>
+                <hr>
+                <!-- Pager -->
+                <ul class="pager">
+                    <li class="next">
+                        <p>Divirta-se!</p
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+

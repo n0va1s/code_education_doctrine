@@ -33,36 +33,36 @@ class CategoriaController implements ControllerProviderInterface
         //api
         $ctrl->get('/api/listar/json', function () use ($app) {
             $srv = $app['categoria_service'];
-            $categorias = $srv->fetchall();
-            return $app->json($categorias);
+            $resultado = $srv->fetchall();
+            return $app->json($resultado);
         })->bind('listarCategoriaJson');
 
         $ctrl->get('/api/listar/{id}', function ($id) use ($app) {
             $srv = $app['categoria_service'];
-            $categorias = $srv->findById($id);
-            return $app->json($categorias);
+            $resultado = $srv->findById($id);
+            return $app->json($resultado);
         })->bind('listarCategoriaIdJson')
         ->assert('id', '\d+');
 
         $ctrl->post('/api/inserir', function (Request $req) use ($app) {
             $dados = $req->request->all();
-            $srv = $app['cliente_service'];
-            $categorias = $srv->insert($dados);
-            return $app->json($categorias);
+            $srv = $app['categoria_service'];
+            $resultado = $srv->save($dados);
+            return $app->json($resultado);
         })->bind('inserirCategoriaJson');
 
-        $ctrl->put('/api/atualizar/{id}', function (Request $req, $id) use ($app) {
+        $ctrl->put('/api/atualizar/{id}', function (Request $req) use ($app) {
             $dados = $req->request->all();
             $srv = $app['categoria_service'];
-            $categorias = $srv->update($id, $dados);
-            return $app->json($categorias[$id]);
+            $resultado = $srv->save($dados);
+            return $app->json($resultado);
         })->bind('atualizarCategoriaJson')
         ->assert('id', '\d+');
 
         $ctrl->delete('/api/apagar/{id}', function ($id) use ($app) {
             $srv = $app['categoria_service'];
-            $categorias = $srv->delete($id);
-            return $app->json($categorias[$id]);
+            $resultado = $srv->delete($id);
+            return $app->json($resultado);
         })->bind('apagarCategoriaJson')
         ->assert('id', '\d+');
 

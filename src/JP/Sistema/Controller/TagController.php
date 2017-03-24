@@ -33,36 +33,36 @@ class TagController implements ControllerProviderInterface
         //api
         $ctrl->get('/api/listar/json', function () use ($app) {
             $srv = $app['tag_service'];
-            $tags = $srv->fetchall();
-            return $app->json($tags);
+            $resultado = $srv->fetchall();
+            return $app->json($resultado);
         })->bind('listarTagJson');
 
         $ctrl->get('/api/listar/{id}', function ($id) use ($app) {
             $srv = $app['tag_service'];
-            $tags = $srv->findById($id);
-            return $app->json($tags);
+            $resultado = $srv->findById($id);
+            return $app->json($resultado);
         })->bind('listarTagIdJson')
         ->assert('id', '\d+');
 
         $ctrl->post('/api/inserir', function (Request $req) use ($app) {
             $dados = $req->request->all();
             $srv = $app['cliente_service'];
-            $tags = $srv->insert($dados);
-            return $app->json($tags);
+            $resultado = $srv->save($dados);
+            return $app->json($resultado);
         })->bind('inserirTagJson');
 
-        $ctrl->put('/api/atualizar/{id}', function (Request $req, $id) use ($app) {
+        $ctrl->put('/api/atualizar/{id}', function (Request $req) use ($app) {
             $dados = $req->request->all();
             $srv = $app['tag_service'];
-            $tags = $srv->update($id, $dados);
-            return $app->json($tags[$id]);
+            $resultado = $srv->save($dados);
+            return $app->json(resultado);
         })->bind('atualizarTagJson')
         ->assert('id', '\d+');
 
         $ctrl->delete('/api/apagar/{id}', function ($id) use ($app) {
             $srv = $app['tag_service'];
-            $tags = $srv->delete($id);
-            return $app->json($tags[$id]);
+            $resultado = $srv->delete($id);
+            return $app->json($resultado);
         })->bind('apagarTagJson')
         ->assert('id', '\d+');
 

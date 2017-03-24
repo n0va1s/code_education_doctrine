@@ -7,7 +7,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 
 /**
  * @ORM\Entity
- * @ORM\Table(name="Cliente")
+ * @ORM\Table(name="Categoria")
  */
 class CategoriaEntity
 {
@@ -28,10 +28,9 @@ class CategoriaEntity
         return $this->id;
     }
 
-    private function _setId($id)
+    public function setId($id)
     {
         $this->id = $id;
-
         return $this;
     }
 
@@ -40,10 +39,9 @@ class CategoriaEntity
         return $this->descricao;
     }
 
-    private function _setDescricao($descricao)
+    public function setDescricao($descricao)
     {
         $this->descricao = $descricao;
-
         return $this;
     }
 }

@@ -18,17 +18,17 @@ class CategoriaService
 
     public function save(array $dados)
     {
-        if (isset($dados['seqCategoria'])) {
+        if (!isset($dados['seqCategoria'])) {
             $categoria = new CategoriaEntity();
             $categoria->setDescricao($dados['nomCategoria']);
             $this->em->persist($categoria);
         } else {
             //Nao consulta. Cria apenas uma referencia ao objeto que sera persistido
             $categoria = $this->em->getReference('\JP\Sistema\Entity\CategoriaEntity', $dados['seqCategoria']);
-            $categoria->setNome($dados['nomCategoria']);
+            $categoria->setDescricao($dados['nomCategoria']);
         }
         $this->em->flush();
-        return $this->fetchall();
+        return $this->toArray($categoria);
     }
 
     public function delete(int $id)
@@ -36,7 +36,7 @@ class CategoriaService
         $categoria = $this->em->getReference('\JP\Sistema\Entity\CategoriaEntity', $id);
         $this->em->remove($categoria);
         $this->em->flush();
-        return $this->fetchall();
+        return $this->toArray($categoria);
     }
 
     public function fetchall()
@@ -57,7 +57,7 @@ class CategoriaService
 
     public function findById(int $id)
     {
-        $categoria = $this->em->createQuery('select c from \JP\Sistema\Entity\CategoriaEntity c where id = :id')
+        $categoria = $this->em->createQuery('select c from \JP\Sistema\Entity\CategoriaEntity c where c.id = :id')
                           ->setParameter('id', $id)
                           ->getArrayResult();
         return $categoria;

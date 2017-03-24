@@ -84,14 +84,14 @@ class ClienteController implements ControllerProviderInterface
         $ctrl->post('/api/inserir', function (Request $req) use ($app) {
             $dados = $req->request->all();
             $srv = $app['cliente_service'];
-            $clientes = $srv->insert($dados);
+            $clientes = $srv->save($dados);
             return $app->json($clientes);
         })->bind('inserirClienteJson');
 
         $ctrl->put('/api/atualizar/{id}', function (Request $req, $id) use ($app) {
             $dados = $req->request->all();
             $srv = $app['cliente_service'];
-            $clientes = $srv->update($id, $dados);
+            $clientes = $srv->save($dados);
             return $app->json($clientes[$chave]);
         })->bind('atualizarClienteJson')
         ->assert('id', '\d+');

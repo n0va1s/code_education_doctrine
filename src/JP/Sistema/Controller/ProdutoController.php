@@ -88,14 +88,14 @@ class ProdutoController implements ControllerProviderInterface
         $ctrl->post('/api/inserir', function (Request $req) use ($app) {
             $dados = $req->request->all();
             $srv = $app['produto_service'];
-            $produtos = $srv->insert($dados);
+            $produtos = $srv->save($dados);
             return $app->json($produtos);
         })->bind('inserirProdutoJson');
 
         $ctrl->put('/api/atualizar/{id}', function (Request $req, $id) use ($app) {
             $dados = $req->request->all();
             $srv = $app['produto_service'];
-            $produtos = $srv->update($id, $dados);
+            $produtos = $srv->save($dados);
             return $app->json($produtos[$chave]);
         })->bind('atualizarProdutoJson');
 
