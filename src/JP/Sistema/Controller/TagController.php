@@ -46,7 +46,7 @@ class TagController implements ControllerProviderInterface
 
         $ctrl->post('/api/inserir', function (Request $req) use ($app) {
             $dados = $req->request->all();
-            $srv = $app['cliente_service'];
+            $srv = $app['tag_service'];
             $resultado = $srv->save($dados);
             return $app->json($resultado);
         })->bind('inserirTagJson');
@@ -55,7 +55,7 @@ class TagController implements ControllerProviderInterface
             $dados = $req->request->all();
             $srv = $app['tag_service'];
             $resultado = $srv->save($dados);
-            return $app->json(resultado);
+            return $app->json($resultado);
         })->bind('atualizarTagJson')
         ->assert('id', '\d+');
 

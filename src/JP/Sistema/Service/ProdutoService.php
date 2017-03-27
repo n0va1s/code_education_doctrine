@@ -30,7 +30,7 @@ class ProdutoService
             $produto->setValor(str_replace(",", ".", $dados['valProduto']));
         }
         $this->em->flush();
-        return $this->fetchAll();
+        return $this->toArray($produto);
     }
 
     public function delete(int $id)
@@ -38,7 +38,7 @@ class ProdutoService
         $produto = $this->em->getReference('\JP\Sistema\Entity\ProdutoEntity', $id);
         $this->em->remove($produto);
         $this->em->flush();
-        return $this->fetchAll();
+        return true;
     }
 
     public function fetchAll()
@@ -58,7 +58,7 @@ class ProdutoService
 
     public function findById(int $id)
     {
-        $cliente = $this->em->createQuery('select p from \JP\Sistema\Entity\ProdutoEntity p where id = :id')
+        $produto = $this->em->createQuery('select p from \JP\Sistema\Entity\ProdutoEntity p where p.id = :id')
                    ->setParameter('id', $id)
                    ->getArrayResult();
         return $produto;
@@ -69,7 +69,7 @@ class ProdutoService
         return  array(
             'id' => $produto->getId(),
             'nome' => $produto->getNome() ,
-            'descricao' => $produto->getEmail(),
+            'descricao' => $produto->getDescricao(),
             'valor' => $produto->getValor(),
             );
     }

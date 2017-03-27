@@ -36,7 +36,7 @@ class CategoriaService
         $categoria = $this->em->getReference('\JP\Sistema\Entity\CategoriaEntity', $id);
         $this->em->remove($categoria);
         $this->em->flush();
-        return $this->toArray($categoria);
+        return true;
     }
 
     public function fetchall()

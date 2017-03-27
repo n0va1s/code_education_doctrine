@@ -30,7 +30,7 @@ class ClienteService
             $cliente->setEmail($dados['emlCliente']);
         }
         $this->em->flush();
-        return $this->fetchall();
+        return $this->toArray($cliente);
     }
 
     public function delete(int $id)
@@ -38,7 +38,7 @@ class ClienteService
         $cliente = $this->em->getReference('\JP\Sistema\Entity\ClienteEntity', $id);
         $this->em->remove($cliente);
         $this->em->flush();
-        return $this->fetchall();
+        return true;
     }
 
     public function fetchall()
@@ -63,7 +63,7 @@ class ClienteService
                    ->setParameter('id', $id)
                    ->getQuery()
                    ->getArrayResult();
-        return $cliente;
+        return $this->toArray($cliente);
     }
 
     public function toArray(ClienteEntity $cliente)

@@ -25,7 +25,7 @@ class TagService
         } else {
             //Nao consulta. Cria apenas uma referencia ao objeto que sera persistido
             $tag = $this->em->getReference('\JP\Sistema\Entity\TagEntity', $dados['seqTag']);
-            $tag->setNome($dados['nomTag']);
+            $tag->setDescricao($dados['nomTag']);
         }
         $this->em->flush();
         return $this->toArray($tag);
@@ -36,7 +36,7 @@ class TagService
         $tag = $this->em->getReference('\JP\Sistema\Entity\TagEntity', $id);
         $this->em->remove($tag);
         $this->em->flush();
-        return $this->toArray($tag);
+        return true;
     }
 
     public function fetchall()

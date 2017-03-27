@@ -92,20 +92,6 @@ class ProdutoEntity
         return $this;
     }
 
-    /**
-     * Sets the value of valor.
-     *
-     * @param mixed $valor the valor
-     *
-     * @return self
-     */
-    private function _setValor($valor)
-    {
-        $this->valor = $valor;
-
-        return $this;
-    }
-
     public function getCategoria()
     {
         return $this->categoria;
