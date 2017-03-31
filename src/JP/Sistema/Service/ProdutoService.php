@@ -3,7 +3,9 @@
 namespace JP\Sistema\Service;
 
 use \Doctrine\ORM\EntityManager;
+use JP\Sistema\Entity\CategoriaEntity;
 use JP\Sistema\Entity\ProdutoEntity;
+use JP\Sistema\Entity\TagEntity;
 
 class ProdutoService
 {
@@ -21,6 +23,21 @@ class ProdutoService
             $produto->setNome($dados['nomProduto']);
             $produto->setDescricao($dados['desProduto']);
             $produto->setValor(str_replace(",", ".", $dados['valProduto']));
+            if (isset($dados['seqCategoria'])) {
+                $categoria = new CategoriaEntity();
+                $categoria->setId($dados['seqCategoria']);
+                $this->em->persist($categoria);
+                //Relacionamento
+                $produto->setCategoria($categoria);
+            }
+            if (isset($dados['seqTag'])) {
+                $arrTag = explode(",", $dados['seqTag']);
+                foreach ($arr as $seqTag) {
+                    $tag = $this->em->getReference('\JP\Sistema\Entity\TagEntity', $seqTag);
+                    $produto->addTag($tag);
+                    $this->em->persist($tag);
+                }
+            }
             $this->em->persist($produto);
         } else {
             //Nao consulta. Cria apenas uma referencia ao objeto que sera persistido

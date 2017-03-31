@@ -103,14 +103,9 @@ class ProdutoEntity
         return $this;
     }
 
-    public function getTag()
+    public function addTag($tag)
     {
-        return $this->tag;
-    }
-
-    public function _setTag($tag)
-    {
-        $this->tag = $tag;
+        $this->tags->add($tag);
         return $this;
     }
 }
