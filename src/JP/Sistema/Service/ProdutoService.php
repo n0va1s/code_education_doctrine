@@ -24,7 +24,7 @@ class ProdutoService
             $produto->setDescricao($dados['desProduto']);
             $produto->setValor(str_replace(",", ".", $dados['valProduto']));
             if (isset($dados['seqCategoria'])) {
-                $categoria = new CategoriaEntity();
+                $categoria = $this->em->getReference('\JP\Sistema\Entity\CategoriaEntity', $dados['seqCategoria']);
                 $categoria->setId($dados['seqCategoria']);
                 $this->em->persist($categoria);
                 //Relacionamento
@@ -32,8 +32,9 @@ class ProdutoService
             }
             if (isset($dados['seqTag'])) {
                 $arrTag = explode(",", $dados['seqTag']);
-                foreach ($arr as $seqTag) {
+                foreach ($arrTag as $seqTag) {
                     $tag = $this->em->getReference('\JP\Sistema\Entity\TagEntity', $seqTag);
+                    $tag->setId($seqTag);
                     $produto->addTag($tag);
                     $this->em->persist($tag);
                 }
