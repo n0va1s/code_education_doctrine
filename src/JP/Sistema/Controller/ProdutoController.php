@@ -35,22 +35,19 @@ class ProdutoController implements ControllerProviderInterface
         })->bind('incluirProduto');
 
         $ctrl->get('/alterar/{id}', function ($id) use ($app) {
-            $srv = $app['produto_service'];
-            $produto = $srv->findById($id);
+            $produto = $app['produto_service']->findById($id);
             return $app['twig']->render('produto_cadastro.twig', array('produto'=>$produto));
         })->bind('alterarProduto')
         ->assert('id', '\d+');
 
         $ctrl->post('/gravar', function (Request $req) use ($app) {
             $dados = $req->request->all();
-            $srv = $app['produto_service'];
-            $produto = $srv->save($dados);
+            $produto = $app['produto_service']->save($dados);
             return $app->redirect($app['url_generator']->generate('listarProdutoHtml'));
         })->bind('gravarProduto');
 
         $ctrl->get('/excluir/{id}', function ($id) use ($app) {
-            $srv = $app['produto_service'];
-            $resultado = $srv->delete($id);
+            $resultado = $app['produto_service']->delete($id);
             return $app['twig']->render('produto_lista.twig', array('produtos'=>$resultado));
         })->bind('excluirProduto')
         ->assert('id', '\d+');
@@ -60,8 +57,7 @@ class ProdutoController implements ControllerProviderInterface
         })->bind('listarProdutoHtml');
 
         $ctrl->get('/listar/paginado/{qtd}', function ($qtd) use ($app) {
-            $srv = $app['produto_service'];
-            $resultado = $srv->fetchLimit($qtd);
+            $resultado = $app['produto_service']->fetchLimit($qtd);
             return $app->json($resultado);
         })->bind('listarProdutoPaginado')
         ->assert('id', '\d+')
@@ -69,34 +65,29 @@ class ProdutoController implements ControllerProviderInterface
         
         //api
         $ctrl->get('/api/listar/json', function () use ($app) {
-            $srv = $app['produto_service'];
-            $resultado = $srv->fetchall();
+            $resultado = $app['produto_service']->fetchall();
             return $app->json($resultado);
         })->bind('listarProdutoJson');
 
         $ctrl->get('/api/listar/{id}', function ($id) use ($app) {
-            $srv = $app['produto_service'];
-            $resultado = $srv->findById($id);
+            $resultado = $app['produto_service']->findById($id);
             return $app->json($resultado);
         })->bind('listarProdutoIdJson');
 
         $ctrl->post('/api/inserir', function (Request $req) use ($app) {
             $dados = $req->request->all();
-            $srv = $app['produto_service'];
-            $resultado = $srv->save($dados);
+            $resultado = $app['produto_service']->save($dados);
             return $app->json($resultado);
         })->bind('inserirProdutoJson');
 
         $ctrl->put('/api/atualizar/{id}', function (Request $req, $id) use ($app) {
             $dados = $req->request->all();
-            $srv = $app['produto_service'];
-            $resultado = $srv->save($dados);
+            $resultado = $app['produto_service']->save($dados);
             return $app->json($resultado);
         })->bind('atualizarProdutoJson');
 
         $ctrl->delete('/api/apagar/{id}', function ($id) use ($app) {
-            $srv = $app['produto_service'];
-            $resultado = $srv->delete($id);
+            $resultado = $app['produto_service']->delete($id);
             return $app->json($resultado);
         })->bind('apagarProdutoJson');
 

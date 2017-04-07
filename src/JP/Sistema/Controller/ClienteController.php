@@ -42,8 +42,8 @@ class ClienteController implements ControllerProviderInterface
 
         $ctrl->post('/gravar', function (Request $req) use ($app) {
             $dados = $req->request->all();
-            $file = $req->files->get('imgCliente');
-            $resultado = $app['cliente_service']->save($dados, $file);
+            $foto = $req->files->get('imgCliente');
+            $resultado = $app['cliente_service']->save($dados, $foto);
             return $app['twig']->render('cliente_lista.twig', ['clientes'=>$app['cliente_service']->fetchall()]);
         })->bind('gravarCliente');
 
