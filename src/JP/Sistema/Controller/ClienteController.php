@@ -35,23 +35,21 @@ class ClienteController implements ControllerProviderInterface
         })->bind('incluirCliente');
 
         $ctrl->get('/alterar/{id}', function ($id) use ($app) {
-            $srv = $app['cliente_service'];
-            $cliente = $srv->findById($id);
+            $cliente = $app['cliente_service']->findById($id);
             return $app['twig']->render('cliente_cadastro.twig', array('cliente'=>$cliente));
         })->bind('alterarCliente')
         ->assert('id', '\d+');
 
         $ctrl->post('/gravar', function (Request $req) use ($app) {
             $dados = $req->request->all();
-            $srv = $app['cliente_service'];
-            $clientes = $srv->save($dados);
-            return $app['twig']->render('cliente_lista.twig', array('clientes'=>$clientes));
+            $file = $req->files->get('imgCliente');
+            $resultado = $app['cliente_service']->save($dados, $file);
+            return $app['twig']->render('cliente_lista.twig', ['clientes'=>$app['cliente_service']->fetchall()]);
         })->bind('gravarCliente');
 
         $ctrl->get('/excluir/{id}', function ($id) use ($app) {
-            $srv = $app['cliente_service'];
-            $clientes = $srv->delete($id);
-            return $app['twig']->render('cliente_lista.twig', array('clientes'=>$clientes));
+            $resultado = $app['cliente_service']->delete($id);
+            return $app['twig']->render('cliente_lista.twig', ['clientes'=>$app['cliente_service']->fetchall()]);
         })->bind('excluirCliente')
         ->assert('id', '\d+');
 
@@ -60,8 +58,7 @@ class ClienteController implements ControllerProviderInterface
         })->bind('listarClienteHtml');
 
         $ctrl->get('/listar/paginado/{qtd}', function ($qtd) use ($app) {
-            $srv = $app['cliente_service'];
-            $clientes = $srv->fetchLimit($qtd);
+            $clientes = $app['cliente_service']->fetchLimit($qtd);
             return $app->json($clientes);
         })->bind('listarClientePaginado')
         ->assert('id', '\d+')
@@ -69,36 +66,31 @@ class ClienteController implements ControllerProviderInterface
 
         //api
         $ctrl->get('/api/listar/json', function () use ($app) {
-            $srv = $app['cliente_service'];
-            $clientes = $srv->fetchall();
+            $clientes = $app['cliente_service']->fetchall();
             return $app->json($clientes);
         })->bind('listarClienteJson');
 
         $ctrl->get('/api/listar/{id}', function ($id) use ($app) {
-            $srv = $app['cliente_service'];
-            $clientes = $srv->findById($id);
+            $clientes = $app['cliente_service']->findById($id);
             return $app->json($clientes);
         })->bind('listarClienteIdJson')
         ->assert('id', '\d+');
 
         $ctrl->post('/api/inserir', function (Request $req) use ($app) {
             $dados = $req->request->all();
-            $srv = $app['cliente_service'];
-            $clientes = $srv->save($dados);
+            $clientes = $app['cliente_service']->save($dados);
             return $app->json($clientes);
         })->bind('inserirClienteJson');
 
         $ctrl->put('/api/atualizar/{id}', function (Request $req, $id) use ($app) {
             $dados = $req->request->all();
-            $srv = $app['cliente_service'];
-            $clientes = $srv->save($dados);
+            $clientes = $app['cliente_service']->save($dados);
             return $app->json($clientes[$chave]);
         })->bind('atualizarClienteJson')
         ->assert('id', '\d+');
 
         $ctrl->delete('/api/apagar/{id}', function ($id) use ($app) {
-            $srv = $app['cliente_service'];
-            $clientes = $srv->delete($id);
+            $clientes = $app['cliente_service']->delete($id);
             return $app->json($clientes[$id]);
         })->bind('apagarClienteJson')
         ->assert('id', '\d+');

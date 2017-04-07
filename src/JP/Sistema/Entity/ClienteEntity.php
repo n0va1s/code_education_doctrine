@@ -4,9 +4,12 @@ namespace JP\Sistema\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
+use JP\Sistema\Service\ArquivoService;
+use Symfony\Component\HttpFoundation\File\UploadedFile as File;
 
 /**
  * @ORM\Entity
+ * @ORM\hasLifeCycleCallbacks
  * @ORM\Table(name="Cliente")
  */
 class ClienteEntity
@@ -25,6 +28,15 @@ class ClienteEntity
      * @ORM\Column(type="string", name="eml_cliente", length=100)
      */
     private $email;
+    /**
+     * @ORM\Column(type="string", name="url_foto", length=255)
+     */
+    private $foto;
+    /**
+     * @ORM\Column(type="datetime", name="dat_cadastro", nullable=true)
+     */
+    private $dataCriacao;
+
 
     public function getId()
     {
@@ -57,5 +69,27 @@ class ClienteEntity
     {
         $this->email = $email;
         return $this;
+    }
+
+    /** @ORM\PrePersist */
+    public function setFoto(File $foto)
+    {
+        $this->foto = ArquivoService::carregarImagem($foto);
+    }
+
+    public function getFoto()
+    {
+        return $this->foto;
+    }
+
+    /** @ORM\PrePersist */
+    public function setDataCriacao()
+    {
+        $this->dataCriacao = new \DateTime();
+    }
+
+    public function getDataCriacao()
+    {
+        return $this->dataCriacao;
     }
 }

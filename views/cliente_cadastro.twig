@@ -5,13 +5,15 @@
         <div class="row">
             <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
                 <div>
-                    <form action="{{ app.url_generator.generate('gravarCliente') }}" method="post">
+                    <form action="{{ app.url_generator.generate('gravarCliente') }}" method="post" enctype="multipart/form-data">
                         <fieldset>
                             <legend>Informe:</legend>
                                 <label for="nome">Nome:</label><br />
-                                <input type="text" id="nome" type="text" name="nomCliente" value ="{% if cliente %}{{ cliente.nome }}{% endif %}"><br />
+                                <input type="text" id="nome" name="nomCliente" value ="{% if cliente %}{{ cliente.nome }}{% endif %}"><br />
                                 <label for="email">Email:</label><br />
-                                <input type="text" id="email" type="email" name="emlCliente" value ="{% if cliente %}{{ cliente.email }}{% endif %}"> <br />
+                                <input type="email" id="email" name="emlCliente" value ="{% if cliente %}{{ cliente.email }}{% endif %}"> <br />
+                                <label for="foto">Foto:</label><br />
+                                <input type="file" id="foto" name="imgCliente" value ="{% if cliente %}{{ cliente.foto }}{% endif %}"> <br />
                         </fieldset>
                         <br />
                         <input type="submit" value="Enviar">
