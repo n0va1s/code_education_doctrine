@@ -8,6 +8,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Doctrine\ORM\EntityManager;
 use JP\Sistema\Service\ClienteService;
+use JP\Sistema\Service\ArquivoService;
 
 class ClienteController implements ControllerProviderInterface
 {

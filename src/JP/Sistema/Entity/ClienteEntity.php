@@ -4,8 +4,8 @@ namespace JP\Sistema\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
-use JP\Sistema\Service\ArquivoService;
 use Symfony\Component\HttpFoundation\File\UploadedFile as File;
+use JP\Sistema\Service\ArquivoService;
 
 /**
  * @ORM\Entity
@@ -72,7 +72,7 @@ class ClienteEntity
     }
 
     /** @ORM\PrePersist */
-    public function setFoto(File $foto)
+    public function setFoto($foto)
     {
         $this->foto = ArquivoService::carregarImagem($foto);
     }
