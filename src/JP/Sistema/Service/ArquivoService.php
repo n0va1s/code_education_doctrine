@@ -42,8 +42,10 @@ class ArquivoService
 
         // Se nao houver erro fara o upload
         if ($uploadOk) {
-            $arquivo->move($filePath, $fileName);
-            return substr_replace('/..', $filePath, 0)."".$fileName;
+            //Renomeia o arquivo por questao de seguranca e para não haver duplicidade
+            $newFileName = round(microtime(true));
+            $arquivo->move($filePath, $newFileName);
+            return $newFileName;
         } else {
             echo "Erro. O arquivo não gravou.";
             return false;
