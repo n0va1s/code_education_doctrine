@@ -71,15 +71,14 @@ class ClienteEntity
         return $this;
     }
 
-    /** @ORM\PrePersist */
-    public function setFoto($foto)
-    {
-        $this->foto = ArquivoService::carregarImagem($foto);
-    }
-
     public function getFoto()
     {
         return $this->foto;
+    }
+    
+    public function setFoto($foto)
+    {
+        $this->foto = ArquivoService::carregarImagem($foto);
     }
 
     /** @ORM\PrePersist */
